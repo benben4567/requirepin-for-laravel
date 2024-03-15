@@ -36,12 +36,12 @@ trait Helpers {
      */
     public function httpResponse(Request $request, string $status, int $status_code, $data = null): RedirectResponse|JsonResponse|Response
     {
-        if (self::shouldResponseBeJson($request)) {
+        if ($this->shouldResponseBeJson($request)) {
             return ResponseFacade::json([
                 'status' => $status,
                 'status_code' => $status_code,
                 'data' => $data
-            ]);
+            ], $status_code);
         }
 
         return back()->with('return_payload', json_encode([
@@ -134,12 +134,12 @@ trait Helpers {
         return null;
     }
 
-    public static function shouldResponseBeJson(Request $request): bool
+    public function shouldResponseBeJson(Request $request): bool
     {
         return $request->wantsJson() || $request->ajax();
     }
 
-    public static function pinRequiredRoute(Request $request): string
+    public function pinRequiredRoute(Request $request): string
     {
         $prefix = explode('/', $request->route()->getPrefix())[0];
 

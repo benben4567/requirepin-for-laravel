@@ -3,17 +3,20 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ikechukwukalu/requirepin?style=flat-square)](https://packagist.org/packages/ikechukwukalu/requirepin)
 [![Quality Score](https://img.shields.io/scrutinizer/quality/g/ikechukwukalu/requirepin/main?style=flat-square)](https://scrutinizer-ci.com/g/ikechukwukalu/requirepin/)
 [![Code Quality](https://img.shields.io/codefactor/grade/github/ikechukwukalu/requirepin?style=flat-square)](https://www.codefactor.io/repository/github/ikechukwukalu/requirepin)
-[![Vulnerability](https://img.shields.io/snyk/vulnerabilities/github/ikechukwukalu/requirepin?style=flat-square)](https://security.snyk.io/package/composer/ikechukwukalu%2Frequirepin)
+[![Known Vulnerabilities](https://snyk.io/test/github/ikechukwukalu/requirepin/badge.svg?style=flat-square)](https://security.snyk.io/package/composer/ikechukwukalu%2Frequirepin)
 [![Github Workflow Status](https://img.shields.io/github/actions/workflow/status/ikechukwukalu/requirepin/requirepin.yml?branch=main&style=flat-square)](https://github.com/ikechukwukalu/requirepin/actions/workflows/requirepin.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/ikechukwukalu/requirepin?style=flat-square)](https://packagist.org/packages/ikechukwukalu/requirepin)
+[![GitHub Repo stars](https://img.shields.io/github/stars/ikechukwukalu/requirepin?style=flat-square)](https://github.com/ikechukwukalu/requirepin/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/ikechukwukalu/requirepin?style=flat-square)](https://github.com/ikechukwukalu/requirepin/issues)
+[![GitHub forks](https://img.shields.io/github/forks/ikechukwukalu/requirepin?style=flat-square)](https://github.com/ikechukwukalu/requirepin/forks)
 [![Licence](https://img.shields.io/packagist/l/ikechukwukalu/requirepin?style=flat-square)](https://github.com/ikechukwukalu/requirepin/blob/main/LICENSE.md)
 
 A simple Laravel package that provides a middleware which will require users to confirm routes utilizing their pin for authentication.
 
 ## REQUIREMENTS
 
-- PHP 8.0+
-- Laravel 9+
+- PHP 7.3+
+- Laravel 8+
 
 ## STEPS TO INSTALL
 
@@ -51,6 +54,18 @@ composer require ikechukwukalu/requirepin
 - This middleware will arrest all incoming requests.
 - A temporary URL (`pin/required/{uuid}`) is generated for a user to authenticate with the specified input `config(requirepin.input)` using their pin.
 - It either returns a `JSON` response with the generated URL or it redirects to a page where a user is required to authenticate the request by entering their pin into a form that will send a **POST** request to the generated URL when submitted.
+- To display return payload within blade:
+
+```js
+@if (session('return_payload'))
+    @php
+        [$status, $status_code, $data] = json_decode(session('return_payload'), true);
+    @endphp
+    <div class="alert alert-{!! $status === 'fail' ? 'danger' : 'success' !!} m-5 text-center">
+        {!! $data['message'] !!}
+    </div>
+@endif
+```
 
 ### Reserved keys for payload
 
